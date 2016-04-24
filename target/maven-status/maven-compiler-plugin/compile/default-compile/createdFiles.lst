@@ -1,0 +1,10 @@
+entities\TeamCoach.class
+entities\AgeLevel.class
+entities\Gender.class
+entities\TournamentRegistration.class
+entities\Club.class
+entities\Tournament.class
+entities\Youth.class
+entities\Person.class
+entities\Team.class
+startup\App.class
