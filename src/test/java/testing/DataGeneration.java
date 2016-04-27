@@ -1,16 +1,25 @@
+package testing;
 
 
 import org.junit.Test;
 
+import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import entities.Club;
 import entities.Team;
 import entities.Youth;
+import entities.Tournament;
+import entities.Person;
 import enums.AgeLevel;
 import enums.Gender;
 import persistence.ClubService;
 import persistence.EntityManagerService;
 import persistence.TeamService;
 import persistence.YouthService;
+import persistence.PersonService;
+import persistence.TournamentService;
 
 public class DataGeneration {
 
@@ -28,8 +37,59 @@ public class DataGeneration {
 		dg.createYouth();
 		dg.createClubs();
 		dg.createTeams();
-
+		dg.createTournament();
+		dg.createPerson();
+		
 		EntityManagerService.close();
+	}
+
+	private void createTournament() {
+		TournamentService service = new TournamentService();
+		
+	    Tournament tournament = new Tournament();
+		tournament.setYouth(bm);
+		Calendar cal = new GregorianCalendar(2016, 5, 25);
+		Date date = (Date) cal.getTime();
+		tournament.setDate(date);
+		tournament.setOpen(true);
+		service.persist(tournament);
+		
+		Tournament tour = new Tournament();
+		tour.setYouth(df);
+		cal = new GregorianCalendar(2016, 7, 05);
+		date = (Date) cal.getTime();
+		tour.setDate(date);
+		tour.setOpen(true);
+		service.persist(tour);
+		
+		Tournament t = new Tournament();
+		t.setYouth(ef);
+		cal = new GregorianCalendar(2016, 8, 24);
+		date = (Date) cal.getTime();
+		t.setDate(date);
+		t.setOpen(true);
+		service.persist(t);
+		
+	}
+
+	private void createPerson() {
+		PersonService ps = new PersonService();
+		
+		Person p = new Person();
+		p.setMailAddress("manasa@gmail.com");
+		p.setFirstName("manasa");
+		ps.persist(p);
+		
+		Person pa = new Person();
+		pa.setMailAddress("dhiren@gmail.com");
+		pa.setFirstName("dhiren");
+		ps.persist(pa);
+		
+		Person pe = new Person();
+		pe.setMailAddress("dhiraj@gmail.com");
+		pe.setFirstName("dhiraj");
+		ps.persist(pe);
+		
 	}
 
 	private void createTeams() {
@@ -127,4 +187,5 @@ public class DataGeneration {
 
 	}
 
+	
 }
