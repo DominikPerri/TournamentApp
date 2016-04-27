@@ -14,7 +14,7 @@ public class PersonService {
 
 	/**
 	 * Persist a new person in the database. 
-	 * return this entity from the database
+	 * return this entity from the database.
 	 * 
 	 * @param person
 	 * @return persisted person
