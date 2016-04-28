@@ -1,14 +1,16 @@
 package persistence;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import java.util.List;
+
 import entities.Tournament;
 
-public class TournamentService {
+public class TournamentService extends BaseService {
+	
+	public TournamentService(){
+		super();
+	}
 
 	/**
 	 * Persist a new tournament in the database. If the tournament already exists then
@@ -20,47 +22,34 @@ public class TournamentService {
 	 * @return persisted tournament
 	 *
 	 */
-	Tournament tournament = new Tournament();
-	
 	public Tournament persist(Tournament tournament) {
-		try {
-			tournament = getExistingTounament(tournament);
-		} catch (NoResultException e) {
-			tournament = persistNewTournament(tournament);
-		}
-		return tournament;
-	}
-	
-	private Tournament getExistingTounament(Tournament tournament) throws NoResultException{
-		EntityManager em = EntityManagerService.getEntityManager();
-		em.getTransaction().begin();
-		Query query = em.createNamedQuery("findTournament");
+		super.setup();
+		super.openConnection();
+		Query query = em.createNamedQuery(Tournament.findTournament);
 		query.setParameter("date", tournament.getDate());
 		query.setParameter("youth", tournament.getYouth().getId());
-		tournament = (Tournament) query.getSingleResult();
-		em.close();
-		return tournament;
-
-	}
-
-	private Tournament persistNewTournament(Tournament tournament)  {
-		EntityManager em = EntityManagerService.getEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-		em.persist(tournament);
-		t.commit();
-		em.close();
-		return tournament;
-	}
-
-	public List<Tournament> getopenTournaments () {
-		EntityManager em = EntityManagerService.getEntityManager();
-		em.getTransaction().begin();
-		Query query = em.createNamedQuery("findOpenTournament");
+		
 		@SuppressWarnings("unchecked")
-		List<Tournament> tournament = ((List<Tournament>)query.getResultList());
-		em.close();
+		List<Tournament> tournamentList = query.getResultList();
+		
+		if (tournamentList.size()==0){
+			super.persist(tournament);
+		} else {
+			tournament = tournamentList.get(0);
+		}
+		closeEntityManager();
 		return tournament;
+	}
+
+	public List<Tournament> getOpenTournaments () {
+		super.setup();
+		super.openConnection();
+		Query query = em.createNamedQuery(Tournament.findOpenTournaments);
+		@SuppressWarnings("unchecked")
+		List<Tournament> tournamentList = ((List<Tournament>)query.getResultList());
+		commitStatement();
+		closeEntityManager();
+		return tournamentList;
 		
 	}
 	

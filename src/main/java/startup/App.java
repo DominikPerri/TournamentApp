@@ -5,6 +5,9 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 import entities.Club;
 import entities.Person;
 import entities.Team;
@@ -13,7 +16,6 @@ import entities.Youth;
 import enums.AgeLevel;
 import enums.Gender;
 import persistence.ClubService;
-import persistence.EntityManagerService;
 import persistence.PersonService;
 import persistence.TeamService;
 import persistence.TournamentService;
@@ -22,9 +24,16 @@ import persistence.YouthService;
 public class App {
 
 	public static void main(String[] args) {
-		ClubService clubSer = new ClubService();
-		Club c = clubSer.persist(new Club("VfB Stuttgart 3"));
 		
+		
+		ClubService clubSer = new ClubService();
+		Club c = new Club("Xsa");
+		c = clubSer.persist(c);	
+		System.out.println(c.getId());
+		
+		Club a = new Club("A");
+		clubSer.persist(a);
+	
 		YouthService youthService = new YouthService();
 		Youth am = new Youth(AgeLevel.A, Gender.MALE);
 		am = youthService.persist(am);
@@ -54,16 +63,12 @@ public class App {
 		tournament.setOpen(true);
 		service.persist(tournament);
 		
-		List<Tournament> tt = service.getopenTournaments();
+		List<Tournament> tt = service.getOpenTournaments();
 		
 		System.out.println("*** Printing tournament list"+tt.size());
 		for(int i =0;i<tt.size() ; i++) {
 			System.out.println(tt.get(i).getDate());
 		}
-			
-		EntityManagerService.close();
-		
-		
 
 	}
 

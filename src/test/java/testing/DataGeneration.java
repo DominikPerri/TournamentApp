@@ -1,12 +1,12 @@
 package testing;
 
-
 import org.junit.Test;
 
 import java.util.Date;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import entities.Address;
 import entities.Club;
 import entities.Team;
 import entities.Youth;
@@ -15,7 +15,6 @@ import entities.Person;
 import enums.AgeLevel;
 import enums.Gender;
 import persistence.ClubService;
-import persistence.EntityManagerService;
 import persistence.TeamService;
 import persistence.YouthService;
 import persistence.PersonService;
@@ -39,8 +38,7 @@ public class DataGeneration {
 		dg.createTeams();
 		dg.createTournament();
 		dg.createPerson();
-		
-		EntityManagerService.close();
+
 	}
 
 	private void createTournament() {
@@ -78,16 +76,24 @@ public class DataGeneration {
 		Person p = new Person();
 		p.setMailAddress("manasa@gmail.com");
 		p.setFirstName("manasa");
+		Address ad = new Address();
+		ad.setCityName("Stuttgart");
+		ad.setHouseNumber(10);
+		ad.setStreetName("Musterstreet");
+		ad.setZipCode(70582);
+		p.setAddress(ad);
 		ps.persist(p);
 		
 		Person pa = new Person();
 		pa.setMailAddress("dhiren@gmail.com");
 		pa.setFirstName("dhiren");
+		pa.setAddress(ad);
 		ps.persist(pa);
 		
 		Person pe = new Person();
 		pe.setMailAddress("dhiraj@gmail.com");
 		pe.setFirstName("dhiraj");
+		pe.setAddress(ad);
 		ps.persist(pe);
 		
 	}

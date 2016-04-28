@@ -1,14 +1,17 @@
 package persistence;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.NoResultException;
+import java.util.List;
+
 import javax.persistence.Query;
 
 import entities.Team;
 
 
-public class TeamService {
+public class TeamService extends BaseService{
+	
+	public TeamService(){
+		super();
+	}
 
 	/**
 	 * Persist a new team in the database. If the team already exists then
@@ -18,34 +21,21 @@ public class TeamService {
 	 * @return persisted team
 	 */
 	public Team persist(Team team) {
-		try {
-			team = getExistingTeam(team);
-		} catch (NoResultException e) {
-			team = persistNewTeam(team);
-		}
-		return team;
-	}
-
-	private Team getExistingTeam(Team team) throws NoResultException{
-		EntityManager em = EntityManagerService.getEntityManager();
-		em.getTransaction().begin();
-		Query query = em.createNamedQuery("findTeam");
+		super.setup();
+		super.openConnection();
+		Query query = em.createNamedQuery(Team.findTeam);
 		query.setParameter("club", team.getClub().getId());
 		query.setParameter("youth", team.getYouth().getId());
-		team = (Team) query.getSingleResult();
-		em.getTransaction().commit();
-		em.close();
-		return team;
-
-	}
-
-	private Team persistNewTeam(Team team)  {
-		EntityManager em = EntityManagerService.getEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-		em.persist(team);
-		t.commit();
-		em.close();
+		
+		@SuppressWarnings("unchecked")
+		List<Team> teamList = query.getResultList();
+		
+		if (teamList.size()==0){
+			super.persist(team);
+		} else {
+			team = teamList.get(0);
+		}
+		closeEntityManager();
 		return team;
 	}
 

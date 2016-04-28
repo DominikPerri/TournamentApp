@@ -4,49 +4,43 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = { "youth_id", "date" }))
 @NamedQueries({
-	@NamedQuery(name = "findTournament", 
-			query = "from Tournament t where t.youth.id = :youth and t.date = :date") ,
-	@NamedQuery(name = "findOpenTournament", 
-			query = "from Tournament t where t.isOpen=1") })
+		@NamedQuery(name = Tournament.findTournament, 
+				query = "SELECT t FROM Tournament t WHERE t.youth.id = :youth AND t.date = :date"),
+		@NamedQuery(name = Tournament.findOpenTournaments, 
+				query = "SELECT t FROM Tournament t WHERE t.isOpen = 1") })
 
-public class Tournament {
+public class Tournament extends BaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	public static final String findTournament = "findTournament";
+	public static final String findOpenTournaments = "findOpenTournament";
 
-	@ManyToOne
+	private static final long serialVersionUID = 1L;
+
+	@ManyToOne(fetch=FetchType.EAGER)
 	private Youth youth;
 
 	private int maxNumber;
 
 	private boolean isOpen;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 
-	@OneToMany(mappedBy = "tournament")
+	@OneToMany(mappedBy = "tournament", fetch=FetchType.LAZY)
 	private List<TournamentRegistration> registered;
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
 
 	public Youth getYouth() {
 		return youth;

@@ -3,9 +3,7 @@ package entities;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -15,41 +13,33 @@ import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = { "youth_id", "club_id" }))
-@NamedQueries({
-	@NamedQuery(name = "findTeam", 
-			query = "from Team t where t.club.id = :club and t.youth.id = :youth") })
-public class Team {
+@NamedQueries({ 
+	@NamedQuery(name = Team.findTeam,
+			query = "SELECT t FROM Team t WHERE t.club.id = :club AND t.youth.id = :youth") })
+public class Team extends BaseEntity {
 	
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO) 
-	private long id;
-	
-	@ManyToOne
-	private Youth youth;
-	
-	@ManyToOne
-	private Club club;
-	
-	@OneToMany(mappedBy = "team")
-    private List<TeamCoach> coachedBy;
-	
-	@OneToMany(mappedBy = "team")
-    private List<TournamentRegistration> registered;
+	public static final String findTeam = "findTeam";
 
-	public Team(Club club, Youth youth){
+	private static final long serialVersionUID = 1L;
+
+	@ManyToOne (fetch=FetchType.EAGER)
+	private Youth youth;
+
+	@ManyToOne (fetch=FetchType.EAGER)
+	private Club club;
+
+	@OneToMany(mappedBy = "team")
+	private List<TeamCoach> coachedBy;
+
+	@OneToMany(mappedBy = "team")
+	private List<TournamentRegistration> registered;
+
+	public Team(Club club, Youth youth) {
 		this.club = club;
 		this.youth = youth;
 	}
-	
-	public Team(){
-	}
-	
-	public long getId() {
-		return id;
-	}
 
-	public void setId(long id) {
-		this.id = id;
+	public Team() {
 	}
 
 	public Youth getYouth() {
@@ -83,6 +73,5 @@ public class Team {
 	public void setRegistered(List<TournamentRegistration> registered) {
 		this.registered = registered;
 	}
-	
 
 }

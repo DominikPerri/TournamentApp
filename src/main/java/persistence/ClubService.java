@@ -1,8 +1,7 @@
 package persistence;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.NoResultException;
+import java.util.List;
+
 import javax.persistence.Query;
 
 import entities.Club;
@@ -13,9 +12,10 @@ import entities.Club;
  * @author Dominik
  *
  */
-public class ClubService {
+public class ClubService extends BaseService {
 
 	public ClubService() {
+		super();
 	}
 
 	/**
@@ -26,33 +26,20 @@ public class ClubService {
 	 * @return persisted club
 	 */
 	public Club persist(Club club) {
-		try{
-			club = getClubByName(club);
-		} catch (NoResultException e){
-			club = persistNewClub(club);
-		}
-		return club;
-	}
-
-	private Club getClubByName(Club club) throws NoResultException{
-		EntityManager em = EntityManagerService.getEntityManager();
-		em.getTransaction().begin();
-		Query query = em.createNamedQuery("findClubByName");
+		super.setup();
+		super.openConnection();
+		Query query = em.createNamedQuery(Club.findClubByName);
 		query.setParameter("name", club.getName());
-		club = (Club) query.getSingleResult();
-		em.getTransaction().commit();
-		em.close();
-		return club;
 
-	}
+		@SuppressWarnings("unchecked")
+		List<Club> clubs = query.getResultList();
 
-	private Club persistNewClub(Club club) {
-		EntityManager em = EntityManagerService.getEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-		em.persist(club);
-		t.commit();
-		em.close();
+		if (clubs.size() == 0) {
+			super.persist(club);
+		} else {
+			club = clubs.get(0);
+		}
+		closeEntityManager();
 		return club;
 	}
 

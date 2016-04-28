@@ -4,9 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -18,13 +15,13 @@ import enums.Gender;
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = { "gender", "ageLevel" }))
 @NamedQueries({
-		@NamedQuery(name = "findYouth", 
-				query = "from Youth y where y.gender = :gender and y.ageLevel = :ageLevel") })
-public class Youth {
+		@NamedQuery(name = Youth.findYouth, 
+				query = "SELECT y FROM Youth y WHERE y.gender = :gender AND y.ageLevel = :ageLevel") })
+public class Youth extends BaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	public final static String findYouth = "findYouth";
+	
+	private static final long serialVersionUID = 1L;
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
@@ -33,21 +30,13 @@ public class Youth {
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private AgeLevel ageLevel;
-	
-	public Youth(AgeLevel age, Gender gender){
+
+	public Youth(AgeLevel age, Gender gender) {
 		this.ageLevel = age;
 		this.gender = gender;
 	}
-	
-	public Youth(){
-	}
 
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
+	public Youth() {
 	}
 
 	public Gender getGender() {
