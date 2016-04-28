@@ -5,9 +5,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
+import entities.Address;
 import entities.Club;
 import entities.Person;
 import entities.Team;
@@ -48,9 +46,16 @@ public class App {
 
 		PersonService ps = new PersonService();
 		
+		Address ad = new Address();
+		ad.setCityName("Stuttgart");
+		ad.setHouseNumber(10);
+		ad.setStreetName("Musterstreet");
+		ad.setZipCode(70582);
+		
 		Person person = new Person();
 		person.setMailAddress("raghav@gmail.com");
 		person.setFirstName("Raghav");
+		person.setAddress(ad);
 		
 		person = ps.persist(person);
 		
