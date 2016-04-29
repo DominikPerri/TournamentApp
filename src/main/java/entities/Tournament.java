@@ -1,5 +1,6 @@
 package entities;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class Tournament extends BaseEntity {
 
 	private boolean isOpen;
 
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	private Date date;
 
 	@OneToMany(mappedBy = "tournament", fetch=FetchType.LAZY)
@@ -80,6 +81,13 @@ public class Tournament extends BaseEntity {
 
 	public void setRegistered(List<TournamentRegistration> registered) {
 		this.registered = registered;
+	}
+	
+	public void add(TournamentRegistration tournamentRegistration) {
+		if (registered == null){
+			registered = new ArrayList<>();
+		}
+		registered.add(tournamentRegistration);
 	}
 
 }

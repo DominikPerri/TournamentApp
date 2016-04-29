@@ -37,5 +37,16 @@ public class PersonService extends BaseService {
 		closeEntityManager();
 		return person;
 	}
+	
+	public Person findPersonByMail(String mailAddress){
+		super.setup();
+		super.openConnection();
+		Query query = em.createNamedQuery(Person.findPersonByMail);
+		query.setParameter("mailAddress", mailAddress);
+		Person person;
+		person = (Person) query.getSingleResult();
+		super.closeEntityManager();
+		return person;
+	}
 
 }

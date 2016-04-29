@@ -4,8 +4,11 @@ persistence\ClubService.class
 persistence\PersonService.class
 persistence\TournamentService.class
 enums\AgeLevel.class
+persistence\BaseService.class
+persistence\TournamentRegistrationService.class
 entities\TournamentRegistration.class
 enums\Gender.class
+persistence\EntityManagerFactoryService.class
 entities\Address.class
 entities\Club.class
 entities\Tournament.class
@@ -13,6 +16,5 @@ entities\Youth.class
 persistence\YouthService.class
 entities\Person.class
 persistence\TeamService.class
-persistence\EntityManagerService.class
 entities\Team.class
 startup\App.class

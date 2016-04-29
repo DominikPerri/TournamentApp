@@ -30,7 +30,19 @@ public class TournamentRegistration extends BaseEntity {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date registrationDate;
+	
+	
+	
+	public TournamentRegistration(Person person, Team team, Tournament tournament) {
+		this.person = person;
+		this.team = team;
+		this.tournament = tournament;
+		this.registrationDate = new Date();
+	}
 
+	public TournamentRegistration(){
+	}
+	
 	public Person getPerson() {
 		return person;
 	}

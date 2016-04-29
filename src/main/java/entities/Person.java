@@ -112,5 +112,12 @@ public class Person extends BaseEntity {
 	public void setRegistered(List<TournamentRegistration> registered) {
 		this.registered = registered;
 	}
+	
+	public void add(TournamentRegistration tournamentRegistration) {
+		if (registered == null){
+			registered = new ArrayList<>();
+		}
+		registered.add(tournamentRegistration);
+	}
 
 }
