@@ -6,9 +6,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
 @Entity
-@NamedQueries({ 
-	@NamedQuery(name = Club.findClubByName, 
-		query = "SELECT c FROM Club c WHERE c.name = :name") })
+@NamedQueries({ @NamedQuery(name = Club.findClubByName, query = "SELECT c FROM Club c WHERE c.name = :name") })
 public class Club extends BaseEntity {
 
 	public static final String findClubByName = "Club.findClubByName";

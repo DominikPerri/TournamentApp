@@ -15,12 +15,11 @@ import enums.Gender;
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = { "gender", "ageLevel" }))
 @NamedQueries({
-		@NamedQuery(name = Youth.findYouth, 
-				query = "SELECT y FROM Youth y WHERE y.gender = :gender AND y.ageLevel = :ageLevel") })
+		@NamedQuery(name = Youth.findYouth, query = "SELECT y FROM Youth y WHERE y.gender = :gender AND y.ageLevel = :ageLevel") })
 public class Youth extends BaseEntity {
 
 	public final static String findYouth = "findYouth";
-	
+
 	private static final long serialVersionUID = 1L;
 
 	@Column(nullable = false)

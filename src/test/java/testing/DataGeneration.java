@@ -38,8 +38,8 @@ public class DataGeneration {
 		dg.createTeams();
 		dg.createTournament();
 		dg.createPerson();
-
 	}
+	
 
 	private void createTournament() {
 		TournamentService service = new TournamentService();

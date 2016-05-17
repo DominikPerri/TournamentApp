@@ -26,8 +26,17 @@ public class BaseService {
 		commitStatement();
 		closeEntityManager();
 	}
+	
+	public void delete(BaseEntity entity) {
+		setup();
+		openConnection();
+		entity = em.merge(entity);
+		em.remove(entity);
+		commitStatement();
+		closeEntityManager();
+	}
 
-	public void openConnection() {
+	protected void openConnection() {
 		if (em == null) {
 			throw new IllegalStateException("EntityManager is not initilized. Is setup() called?");
 		}
@@ -37,7 +46,7 @@ public class BaseService {
 		em.getTransaction().begin();
 	}
 
-	public void commitStatement() {
+	protected void commitStatement() {
 		if (!em.isOpen()) {
 			throw new PersistenceException("Connection is closed");
 		} else if (!em.getTransaction().isActive()) {
@@ -46,13 +55,13 @@ public class BaseService {
 		em.getTransaction().commit();
 	}
 
-	public void closeEntityManager() {
+	protected void closeEntityManager() {
 		if (em.isOpen()) {
 			em.close();
 		}
 	}
 
-	public void shutDown() {
+	protected void shutDown() {
 		if (emf.isOpen()) {
 			emf.close();
 		}

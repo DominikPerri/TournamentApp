@@ -34,7 +34,7 @@ public class PersonService extends BaseService {
 		} else {
 			person = personList.get(0);
 		}
-		closeEntityManager();
+		super.closeEntityManager();
 		return person;
 	}
 	

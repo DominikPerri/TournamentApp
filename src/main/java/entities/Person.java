@@ -3,6 +3,7 @@ package entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -38,10 +39,10 @@ public class Person extends BaseEntity {
 	@Column(unique = true)
 	private String mailAddress;
 
-	@OneToMany(mappedBy = "person", fetch=FetchType.LAZY)
+	@OneToMany(mappedBy = "person", fetch=FetchType.LAZY, cascade = CascadeType.REMOVE)
 	private List<TeamCoach> coachOf;
 
-	@OneToMany(mappedBy = "person", fetch=FetchType.LAZY)
+	@OneToMany(mappedBy = "person", fetch=FetchType.LAZY, cascade = CascadeType.REMOVE)
 	private List<TournamentRegistration> registered;
 
 	public Person() {

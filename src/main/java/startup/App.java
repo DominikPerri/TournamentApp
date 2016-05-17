@@ -90,8 +90,7 @@ public class App {
 		System.out.println("Club/Team: " + t2.get(0).getTeam().getClub().getName());
 		System.out.println("Tournament: " + t2.get(0).getTournament().getId());
 		System.out.println("Date: " + t2.get(0).getRegistrationDate());
-	
-		
+
 		EntityManagerFactoryService.close();
 
 	}
