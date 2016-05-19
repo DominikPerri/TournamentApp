@@ -47,10 +47,8 @@ public class TournamentService extends BaseService {
 		Query query = em.createNamedQuery(Tournament.findOpenTournaments);
 		@SuppressWarnings("unchecked")
 		List<Tournament> tournamentList = ((List<Tournament>)query.getResultList());
-		commitStatement();
 		closeEntityManager();
 		return tournamentList;
-		
 	}
 	
 }
