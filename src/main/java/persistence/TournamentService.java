@@ -1,8 +1,10 @@
 package persistence;
 
+
 import javax.persistence.Query;
 
 import java.util.List;
+
 
 import entities.Tournament;
 
@@ -11,7 +13,7 @@ public class TournamentService extends BaseService {
 	public TournamentService(){
 		super();
 	}
-
+     
 	/**
 	 * Persist a new tournament in the database. If the tournament already exists then
 	 * return this entity from the database
@@ -47,8 +49,33 @@ public class TournamentService extends BaseService {
 		Query query = em.createNamedQuery(Tournament.findOpenTournaments);
 		@SuppressWarnings("unchecked")
 		List<Tournament> tournamentList = ((List<Tournament>)query.getResultList());
+		commitStatement();
 		closeEntityManager();
 		return tournamentList;
+
 	}
 	
-}
+	public List<Tournament> getOpenTournamentsByYear(int year) {
+		super.setup();
+		super.openConnection();
+		Query query = em.createNamedQuery(Tournament.findOpenTournamentsByyear);
+		query.setParameter("year", year);
+		@SuppressWarnings("unchecked")
+		List<Tournament> tournamentList = ((List<Tournament>)query.getResultList());
+		commitStatement();
+		closeEntityManager();
+		return tournamentList;
+
+	}
+	
+	public void closeTournament(Tournament tournament) {
+		super.setup();
+		super.openConnection();
+		Tournament tor = em.find(Tournament.class, tournament.getId());
+	    tor.setOpen(false);
+	    em.merge(tor);
+		commitStatement();
+		closeEntityManager();
+	   }
+	}
+	
