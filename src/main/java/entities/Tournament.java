@@ -21,12 +21,16 @@ import javax.persistence.UniqueConstraint;
 		@NamedQuery(name = Tournament.findTournament, 
 				query = "SELECT t FROM Tournament t WHERE t.youth.id = :youth AND t.date = :date"),
 		@NamedQuery(name = Tournament.findOpenTournaments, 
-				query = "SELECT t FROM Tournament t WHERE t.isOpen = 1") })
+				query = "SELECT t FROM Tournament t WHERE t.isOpen = 1"),
+        @NamedQuery(name = Tournament.findOpenTournamentsByyear, 
+                query = "SELECT t FROM Tournament t where extract(year from date)=:year ")})
 
 public class Tournament extends BaseEntity {
 
 	public static final String findTournament = "findTournament";
 	public static final String findOpenTournaments = "findOpenTournament";
+	public static final String findOpenTournamentsByyear = "findOpenTournamentsByyear";
+	public static final String closeTournament = "closeTournament";
 
 	private static final long serialVersionUID = 1L;
 
