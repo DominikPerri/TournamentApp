@@ -17,6 +17,7 @@ import enums.Gender;
 import persistence.ClubService;
 import persistence.EntityManagerFactoryService;
 import persistence.PersonService;
+import persistence.TeamCoachService;
 import persistence.TeamService;
 import persistence.TournamentRegistrationService;
 import persistence.TournamentService;
@@ -32,7 +33,7 @@ public class App {
 		clubA = clubSer.persist(clubA);	
 		System.out.println(clubA.getId());
 		
-		Club a = new Club("Testclub B");
+		Club a = new Club("Testclub M");
 		clubSer.persist(a);
 	
 		YouthService youthService = new YouthService();
@@ -56,8 +57,8 @@ public class App {
 		ad.setZipCode(70582);
 		
 		Person person = new Person();
-		person.setMailAddress("raghav@gmail.com");
-		person.setFirstName("Raghav");
+		person.setMailAddress("raghavm@gmail.com");
+		person.setFirstName("RaghavM");
 		person.setAddress(ad);
 		
 		person = ps.persist(person);
@@ -65,7 +66,7 @@ public class App {
 		Tournament tournament = new Tournament();
 		TournamentService service = new TournamentService();
 		tournament.setYouth(cm);
-		Calendar cal = new GregorianCalendar(2016, 5, 25);
+		Calendar cal = new GregorianCalendar(2015, 8, 25);
 		Date date = (Date) cal.getTime();
 		tournament.setDate(date);
 		tournament.setOpen(true);
@@ -77,6 +78,14 @@ public class App {
 		for(int i =0;i<tt.size() ; i++) {
 			System.out.println(tt.get(i).getDate());
 		}
+		
+		List<Tournament> tt2 =  service.getOpenTournamentsByYear(2016);
+		
+		System.out.println("*** Printing tournament list By year "+tt2.size());
+		for(int i =0;i<tt2.size() ; i++) {
+			System.out.println(tt2.get(i).getDate()+",,,,"+tt2.get(i).getId());
+		}
+		
 		
 //		Register someone to a tournament
 		TournamentRegistrationService tournamentRegService = new TournamentRegistrationService();
@@ -91,8 +100,17 @@ public class App {
 		System.out.println("Tournament: " + t2.get(0).getTournament().getId());
 		System.out.println("Date: " + t2.get(0).getRegistrationDate());
 
+		
+   	//Persist in team_coach table
+		TeamCoachService tcs = new TeamCoachService();
+		tcs.persist(person,team);
+		
+		
+		//closes selected open tournament
+		TournamentService tt3 = new TournamentService();
+		tt3.closeTournament(tournament);
+					
 		EntityManagerFactoryService.close();
 
 	}
-
 }
